@@ -30,20 +30,18 @@ We really want to see your best work. Take as little or as long as you need to. 
 
 ![](ios_02.png)
 
-The Calendar view is a continuously scrolling view that allows the user to browse between days of the year. Tapping on a date should update the information displayed in the Agenda view.
+The Calendar view is a scrolling view that allows the user to browse between days of the year. Tapping on a date should update the information displayed in the Agenda view.
 
 ### Agenda View
 
 ![](ios_03.png)
 
-The Agenda view is a continuously scrolling view that allows the user to browse events in chronological order. Moving between dates should update the information displayed in the Calendar view.
+The Agenda view is a scrolling view that allows the user to browse events in chronological order. Moving between dates should update the information displayed in the Calendar view.
 
 ### Other Tips
 
 - Make sure the expansion and contraction interaction between the Calendar view and Agenda view is fast and fluid
-
 - Feel free to cut out non-essential features if you are short on time
-
 - Use a static data set for your calendar events
 
 ## Bonus: Networking Challenge
