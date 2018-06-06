@@ -15,6 +15,7 @@ Please complete this challenge and send a zip copy to:
 
 - Please avoid using 3rd-party libraries: we want to see your code and problem solving. We do not expect you to handle all cases (calendar is complicated), so don't be afraid to cut some features if you need to. A comment explaining what you didn't have time to implement, and some of your thoughts, is always appreciated.
 - Please minimize your use of xibs/storyboards: we're interested to see how you organize your view hierarchy, lay out your views, and structure your project. We find an overreliance on xibs and storyboards often hides this.
+- Swift is the preferred language, but Objective-C is also accepted.
 
 ## Calendar and Agenda Views
 
