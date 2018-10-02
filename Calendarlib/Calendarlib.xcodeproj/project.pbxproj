@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2947F27321633ECE00C3892A /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2947F27221633ECE00C3892A /* CalendarCell.swift */; };
 		2947F275216350DE00C3892A /* DateFormatFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2947F274216350DE00C3892A /* DateFormatFactory.swift */; };
+		2947F2772163536700C3892A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2947F2762163536700C3892A /* DetailViewController.swift */; };
+		2947F279216357D900C3892A /* DemoCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2947F278216357D900C3892A /* DemoCalendarViewModel.swift */; };
 		29DAB5A0216309DB00B29045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB59F216309DB00B29045 /* AppDelegate.swift */; };
 		29DAB5A2216309DB00B29045 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5A1216309DB00B29045 /* DemoViewController.swift */; };
 		29DAB5A5216309DB00B29045 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29DAB5A3216309DB00B29045 /* Main.storyboard */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		2947F27221633ECE00C3892A /* CalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		2947F274216350DE00C3892A /* DateFormatFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatFactory.swift; sourceTree = "<group>"; };
+		2947F2762163536700C3892A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		2947F278216357D900C3892A /* DemoCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoCalendarViewModel.swift; sourceTree = "<group>"; };
 		29DAB59C216309DB00B29045 /* Calendarlib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendarlib.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DAB59F216309DB00B29045 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29DAB5A1216309DB00B29045 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
@@ -72,12 +76,14 @@
 			children = (
 				29DAB5BA216335CD00B29045 /* SupportedFiles */,
 				29DAB5B1216309FC00B29045 /* Sources */,
-				29DAB59F216309DB00B29045 /* AppDelegate.swift */,
 				29DAB5A1216309DB00B29045 /* DemoViewController.swift */,
+				2947F2762163536700C3892A /* DetailViewController.swift */,
+				29DAB59F216309DB00B29045 /* AppDelegate.swift */,
 				29DAB5A3216309DB00B29045 /* Main.storyboard */,
 				29DAB5A6216309DD00B29045 /* Assets.xcassets */,
 				29DAB5A8216309DD00B29045 /* LaunchScreen.storyboard */,
 				29DAB5AB216309DD00B29045 /* Info.plist */,
+				2947F278216357D900C3892A /* DemoCalendarViewModel.swift */,
 			);
 			path = Calendarlib;
 			sourceTree = "<group>";
@@ -201,12 +207,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				29DAB5B521630B0100B29045 /* CalendarBodyView.swift in Sources */,
+				2947F279216357D900C3892A /* DemoCalendarViewModel.swift in Sources */,
 				2947F275216350DE00C3892A /* DateFormatFactory.swift in Sources */,
 				29DAB5B921630BC600B29045 /* CalendarHelper.swift in Sources */,
 				29DAB5BE216337F600B29045 /* CalendarEventCell.swift in Sources */,
 				29DAB5A2216309DB00B29045 /* DemoViewController.swift in Sources */,
 				29DAB5B721630B5A00B29045 /* CalendarHeadView.swift in Sources */,
 				29DAB5A0216309DB00B29045 /* AppDelegate.swift in Sources */,
+				2947F2772163536700C3892A /* DetailViewController.swift in Sources */,
 				29DAB5C121633B1D00B29045 /* CalendarEventHeadView.swift in Sources */,
 				2947F27321633ECE00C3892A /* CalendarCell.swift in Sources */,
 			);

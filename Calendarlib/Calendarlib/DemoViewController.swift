@@ -20,7 +20,8 @@ class DemoViewController: UIViewController {
     }
     
     @objc func didTapAddAction(item: UIBarButtonItem) {
-        print("\(#function)")
+        let vc = DetailViewController.create()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - Life Cycle
@@ -71,20 +72,37 @@ class DemoViewController: UIViewController {
     // MARK: - UI setup
     
     private func setupNav() {
-        title = "一月 2019"
+        updateNavTitle()
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: CalendarConstant.selectedStyle.fillColor
+        ]
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
         let moreActionButton = UIBarButtonItem(title: "More", style: .plain, target: self, action: #selector(didTapMoreAction(item:)))
+        moreActionButton.tintColor = CalendarConstant.default.black
+        
         let addActionButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didTapAddAction(item:)))
+        addActionButton.tintColor = CalendarConstant.default.black
+        
         let displayModeActionButton = UIBarButtonItem(title: "Display", style: .done, target: self, action: #selector(didTapDisplayAction(item:)))
+        displayModeActionButton.tintColor = CalendarConstant.default.black
         
         self.navigationItem.leftBarButtonItems = [moreActionButton]
         self.navigationItem.rightBarButtonItems = [addActionButton, displayModeActionButton]
     }
-
+    
+    private func updateNavTitle() {
+        title = viewModel.pickedDateDesc
+    }
     
     // MARK: - Property
+    
+    var viewModel: DemoCalendarViewModel = DemoCalendarViewModel()
 }
 
 // MARK: - Protocol
+
 extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 42
@@ -112,6 +130,12 @@ extension DemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = CalendarEventHeadView()
+        headerView.update(isToday: false, content: viewModel.sectionTitle(section: section))
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
