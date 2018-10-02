@@ -9,6 +9,8 @@
 import UIKit
 
 class DemoViewController: UIViewController {
+    // MARK: - Event Response
+    
     @objc func didTapMoreAction(item: UIBarButtonItem) {
         print("\(#function)")
     }
@@ -21,14 +23,25 @@ class DemoViewController: UIViewController {
         print("\(#function)")
     }
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNav()
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CalendarConstant.default.itemSize
+        let cellWidth = ceil(view.bounds.width / 7)
+        layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
+        
+        let calendarHeadView = CalendarHeadView()
+        view.addSubview(calendarHeadView)
+        calendarHeadView.translatesAutoresizingMaskIntoConstraints = false
+        calendarHeadView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        calendarHeadView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        calendarHeadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        calendarHeadView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         let calView = CalendarBodyView(frame: .zero, collectionViewLayout: layout)
         calView.register(CalendarCell.self, forCellWithReuseIdentifier: NSStringFromClass(CalendarCell.self))
@@ -36,7 +49,7 @@ class DemoViewController: UIViewController {
         calView.translatesAutoresizingMaskIntoConstraints = false
         calView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         calView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        calView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        calView.topAnchor.constraint(equalTo: calendarHeadView.bottomAnchor).isActive = true
         calView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         calView.delegate = self
         calView.dataSource = self
@@ -55,6 +68,8 @@ class DemoViewController: UIViewController {
         tableView.backgroundColor = .cyan
     }
     
+    // MARK: - UI setup
+    
     private func setupNav() {
         title = "一月 2019"
         let moreActionButton = UIBarButtonItem(title: "More", style: .plain, target: self, action: #selector(didTapMoreAction(item:)))
@@ -64,8 +79,12 @@ class DemoViewController: UIViewController {
         self.navigationItem.leftBarButtonItems = [moreActionButton]
         self.navigationItem.rightBarButtonItems = [addActionButton, displayModeActionButton]
     }
+
+    
+    // MARK: - Property
 }
 
+// MARK: - Protocol
 extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 42

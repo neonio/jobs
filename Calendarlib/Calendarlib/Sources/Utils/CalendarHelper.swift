@@ -30,7 +30,6 @@ extension UILabel {
 
 struct CalendarConstant {
     struct `default` {
-        static let itemSize = CGSize(width: 44, height: 44)
         static let font = UIFont.systemFont(ofSize: 16, weight: .medium)
         static let fontColor = UIColor(white: 0, alpha: 1)
         static let disableFillColor = UIColor(hex: 0xF8F8F8)
