@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EventKit
 class CalendarEventCell: UITableViewCell {
     // MARK: - Event Response
     
@@ -29,4 +30,29 @@ class CalendarEventCell: UITableViewCell {
     // MARK: - Protocol
     
     // MARK: - Property
+    
+    lazy var durationLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var mainTitleLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var startTimeLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var participantStackView: UIStackView = {
+        let stack = UIStackView()
+        return stack
+    }()
+    
+    lazy var locationLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
 }

@@ -79,13 +79,22 @@ class DemoViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         
-        let moreActionButton = UIBarButtonItem(title: "More", style: .plain, target: self, action: #selector(didTapMoreAction(item:)))
+        let moreActionButton = UIBarButtonItem(title: IconFont.more, style: .plain, target: self, action: #selector(didTapMoreAction(item:)))
+        moreActionButton.setTitleTextAttributes([
+            NSAttributedString.Key.font:IconFont.font(size: 24)
+        ], for: UIControl.State())
         moreActionButton.tintColor = CalendarConstant.default.black
         
-        let addActionButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(didTapAddAction(item:)))
+        let addActionButton = UIBarButtonItem(title: IconFont.add, style: .plain, target: self, action: #selector(didTapAddAction(item:)))
+        addActionButton.setTitleTextAttributes([
+            NSAttributedString.Key.font:IconFont.font(size: 24)
+            ], for: UIControl.State())
         addActionButton.tintColor = CalendarConstant.default.black
         
-        let displayModeActionButton = UIBarButtonItem(title: "Display", style: .done, target: self, action: #selector(didTapDisplayAction(item:)))
+        let displayModeActionButton = UIBarButtonItem(title: IconFont.list, style: .done, target: self, action: #selector(didTapDisplayAction(item:)))
+        displayModeActionButton.setTitleTextAttributes([
+            NSAttributedString.Key.font:IconFont.font(size: 24)
+            ], for: UIControl.State())
         displayModeActionButton.tintColor = CalendarConstant.default.black
         
         self.navigationItem.leftBarButtonItems = [moreActionButton]
