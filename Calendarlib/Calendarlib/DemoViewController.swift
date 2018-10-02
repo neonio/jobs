@@ -66,7 +66,6 @@ class DemoViewController: UIViewController {
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: calView.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        tableView.backgroundColor = .cyan
     }
     
     // MARK: - UI setup
@@ -80,21 +79,15 @@ class DemoViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         
         let moreActionButton = UIBarButtonItem(title: IconFont.more, style: .plain, target: self, action: #selector(didTapMoreAction(item:)))
-        moreActionButton.setTitleTextAttributes([
-            NSAttributedString.Key.font:IconFont.font(size: 24)
-        ], for: UIControl.State())
+        moreActionButton.fontAwesome(size: 24)
         moreActionButton.tintColor = CalendarConstant.default.black
         
         let addActionButton = UIBarButtonItem(title: IconFont.add, style: .plain, target: self, action: #selector(didTapAddAction(item:)))
-        addActionButton.setTitleTextAttributes([
-            NSAttributedString.Key.font:IconFont.font(size: 24)
-            ], for: UIControl.State())
+        addActionButton.fontAwesome(size: 24)
         addActionButton.tintColor = CalendarConstant.default.black
         
         let displayModeActionButton = UIBarButtonItem(title: IconFont.list, style: .done, target: self, action: #selector(didTapDisplayAction(item:)))
-        displayModeActionButton.setTitleTextAttributes([
-            NSAttributedString.Key.font:IconFont.font(size: 24)
-            ], for: UIControl.State())
+        displayModeActionButton.fontAwesome(size: 24)
         displayModeActionButton.tintColor = CalendarConstant.default.black
         
         self.navigationItem.leftBarButtonItems = [moreActionButton]

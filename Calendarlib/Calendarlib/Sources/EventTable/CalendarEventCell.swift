@@ -6,10 +6,40 @@
 //  Copyright © 2018 amoyio. All rights reserved.
 //
 
-import UIKit
 import EventKit
+import UIKit
 class CalendarEventCell: UITableViewCell {
     // MARK: - Event Response
+    
+    func update(model: EKEvent) {
+        mainTitleLabel.text = model.title
+        
+        if model.isAllDay {
+            startTimeLabel.text = "全天"
+            durationLabel.isHidden = true
+        } else {
+            startTimeLabel.text = DateFormatFactory.shared.dateFormatter(format: "hh:mm").string(from: model.startDate)
+            durationLabel.isHidden = false
+            durationLabel.text = model.endDate.timeIntervalSince(model.startDate).humanReadable()
+        }
+        
+        if let locationDesc = model.location {
+            locationLabel.text = "\(IconFont.location) \(locationDesc)"
+        }
+        
+        for attendee in model.attendees ?? [] {
+            let label = UILabel()
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 13)
+            if let attendeeName = attendee.name, !attendeeName.isEmpty {
+                label.text = String(attendeeName.first!)
+            } else if let urlStr = attendee.url.absoluteString.first {
+                label.text = String(urlStr)
+            }
+            
+            participantStackView.addArrangedSubview(label)
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -23,7 +53,13 @@ class CalendarEventCell: UITableViewCell {
         initialized()
     }
     
-    private func initialized() {}
+    private func initialized() {
+        addSubview(durationLabel)
+        addSubview(mainTitleLabel)
+        addSubview(startTimeLabel)
+        addSubview(participantStackView)
+        addSubview(locationLabel)
+    }
     
     // MARK: - UI setup
     
@@ -38,6 +74,8 @@ class CalendarEventCell: UITableViewCell {
     
     lazy var mainTitleLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 2
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         return label
     }()
     
@@ -48,6 +86,9 @@ class CalendarEventCell: UITableViewCell {
     
     lazy var participantStackView: UIStackView = {
         let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
         return stack
     }()
     
