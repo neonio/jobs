@@ -31,6 +31,20 @@ extension String {
         return result
     }
 
+    func short() -> String {
+        var result = ""
+        let nameSet = self.split(separator: " ")
+        if let pre = nameSet.first?.first {
+            result += String(pre)
+        }
+        
+        
+        if nameSet.count > 1, let last = nameSet.last?.first {
+            result += String(last)
+        }
+        return result.uppercased()
+    }
+    
     func color() -> UIColor {
         if isEmpty {
             return UIColor.white
@@ -62,18 +76,10 @@ extension UIColor {
 extension UIBarButtonItem {
     @discardableResult
     func fontAwesome(size: CGFloat) -> UIBarButtonItem {
-        setTitleTextAttributes([
-            NSAttributedString.Key.font: IconFont.font(size: size)
-        ], for: UIControl.State.normal)
-        setTitleTextAttributes([
-            NSAttributedString.Key.font: IconFont.font(size: size)
-        ], for: UIControl.State.highlighted)
-        setTitleTextAttributes([
-            NSAttributedString.Key.font: IconFont.font(size: size)
-        ], for: UIControl.State.selected)
-        setTitleTextAttributes([
-            NSAttributedString.Key.font: IconFont.font(size: size)
-        ], for: UIControl.State.disabled)
+        setTitleTextAttributes([NSAttributedString.Key.font: IconFont.font(size: size)], for: UIControl.State.normal)
+        setTitleTextAttributes([NSAttributedString.Key.font: IconFont.font(size: size)], for: UIControl.State.highlighted)
+        setTitleTextAttributes([NSAttributedString.Key.font: IconFont.font(size: size)], for: UIControl.State.selected)
+        setTitleTextAttributes([NSAttributedString.Key.font: IconFont.font(size: size)], for: UIControl.State.disabled)
         return self
     }
 }
@@ -108,6 +114,24 @@ extension UIImage {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return resultImage
+    }
+
+    static func image(string: String, size: CGSize, color: UIColor, font: UIFont, fontColor: UIColor) -> UIImage? {
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(color.cgColor)
+        let baseRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let path = UIBezierPath(roundedRect: baseRect, cornerRadius: size.width / 2)
+        path.addClip()
+        path.fill()
+        let attrs: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                                                    NSAttributedString.Key.foregroundColor: fontColor]
+        let str = NSString(string: string)
+        let stringSize = str.boundingRect(with: size, options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
+        str.draw(at: CGPoint(x: (size.width - stringSize.width) / 2, y: (size.height - stringSize.height) / 2 ), withAttributes: attrs)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }
 

@@ -6,9 +6,9 @@
 //  Copyright © 2018 amoyio. All rights reserved.
 //
 
-import EventKit
 import UIKit
-class DemoCalendarViewModel {
+import EventKit
+class DemoCalendarViewModel:NSObject {
     var headDateFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MM")
     var headShortDateFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MMMM yyyy")
     var tableDayFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MM/dd")
@@ -31,29 +31,49 @@ class DemoCalendarViewModel {
         return dateStr + weekDate
     }
     
-    lazy var eventStore: EKEventStore = {
+    override init() {
+        super.init()
+    }
+}
+
+extension DemoCalendarViewModel: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(CalendarEventCell.self), for: indexPath) as! CalendarEventCell
         let store = EKEventStore()
-        return store
-    }()
-    
-    func requestCalendarPermissionIfNeeded() {
-        if EKEventStore.authorizationStatus(for: .event) == .notDetermined {
-            eventStore.requestAccess(to: .event) { [weak self] isGranted, error in
-                guard let self = self else { return }
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    if isGranted {
-                        self.update()
-                    } else {
-                        print("No calendar permission")
-                    }
-                }
+        let event = EKEvent(eventStore: store)
+        event.calendar = EKCalendar(for: .event, eventStore: store)
+        event.title = "hahahah"
+        event.location = "zhonghuarenminggongheguo hahah"
+        var attendees = [EKParticipant]()
+        for i in 0 ..< 5 {
+            if let attendee = createParticipant(email: "test\(i)@email.com") , indexPath.row % 3 == 0 {
+                attendees.append(attendee)
             }
         }
+        event.setValue(attendees, forKey: "attendees")
+        event.startDate = Date(timeIntervalSinceNow: -3600)
+        event.endDate = Date(timeIntervalSinceNow: 3600)
+        cell.update(model: event)
+        return cell
     }
     
-    func update() {}
+    private func createParticipant(email: String) -> EKParticipant? {
+        let clazz: AnyClass? = NSClassFromString("EKAttendee")
+        if let type = clazz as? NSObject.Type {
+            let attendee = type.init()
+            attendee.setValue("V", forKey: "firstName")
+            attendee.setValue("f", forKey: "lastName")
+            attendee.setValue(email, forKey: "emailAddress")
+            return attendee as? EKParticipant
+        }
+        return nil
+    }
     
-    init() {}
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 14
+    }
 }

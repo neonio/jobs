@@ -8,24 +8,22 @@
 
 import UIKit
 
-//-------
+// -------
 // cell height 44
 // indicator 8
 // day label 24
 // month Label 16
-//-------
+// -------
 
 struct CalendarCellPresenter {
-    var isMonthFirstDay:Bool = false
-    var isSelect:Bool = false
-    var inCurrentMonthScope:Bool = true
-    var numberOfEvent:Int = 0
+    var isMonthFirstDay: Bool = false
+    var isSelect: Bool = false
+    var inCurrentMonthScope: Bool = true
+    var numberOfEvent: Int = 0
 }
 
 class CalendarCell: UICollectionViewCell {
-    func updateUI(presentModel: CalendarCellPresenter) {
-        
-    }
+    func updateUI(presentModel: CalendarCellPresenter) {}
     
     // MARK: - Life Cycle
     
@@ -44,6 +42,7 @@ class CalendarCell: UICollectionViewCell {
     }
     
     // MARK: - UI setup
+    
     private func setupUI() {
         addSubview(dayLabel)
         addSubview(eventIndicatorView)
@@ -53,9 +52,8 @@ class CalendarCell: UICollectionViewCell {
         contentView.clipsToBounds = false
     }
     
-    
     private func layoutMethod() {
-        var topOffset:CGFloat = 0
+        var topOffset: CGFloat = 0
         monthLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.3))
         topOffset += monthLabel.bounds.height
         dayLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.6))
@@ -68,11 +66,10 @@ class CalendarCell: UICollectionViewCell {
         layoutMethod()
     }
     
-    
-    
     // MARK: - Protocol
     
     // MARK: - Property
+    
     override var reuseIdentifier: String? {
         return NSStringFromClass(CalendarCell.self)
     }
@@ -103,12 +100,9 @@ class CalendarCell: UICollectionViewCell {
         return bgLayer
     }()
     
-    
     lazy var eventIndicatorView: UIView = {
         let eventView = UIView()
         eventView.backgroundColor = .clear
         return eventView
     }()
 }
-
-

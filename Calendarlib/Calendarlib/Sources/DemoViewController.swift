@@ -31,7 +31,7 @@ class DemoViewController: UIViewController {
         setupNav()
         
         let layout = UICollectionViewFlowLayout()
-        let cellWidth = ceil(view.bounds.width / 7)
+        let cellWidth = view.bounds.width / 7
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
@@ -45,6 +45,8 @@ class DemoViewController: UIViewController {
         calendarHeadView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         let calView = CalendarBodyView(frame: .zero, collectionViewLayout: layout)
+        calView.showsVerticalScrollIndicator = false
+        calView.showsHorizontalScrollIndicator = false
         calView.register(CalendarCell.self, forCellWithReuseIdentifier: NSStringFromClass(CalendarCell.self))
         view.addSubview(calView)
         calView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +60,7 @@ class DemoViewController: UIViewController {
         
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.delegate = self
-        tableView.dataSource = self
+        tableView.dataSource = self.viewModel
         view.addSubview(tableView)
         tableView.register(CalendarEventCell.self, forCellReuseIdentifier: NSStringFromClass(CalendarEventCell.self))
         tableView.rowHeight = UITableView.automaticDimension
@@ -106,6 +108,7 @@ class DemoViewController: UIViewController {
 }
 
 // MARK: - Protocol
+
 import EventKit
 extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -121,36 +124,14 @@ extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 }
 
-extension DemoViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 14
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(CalendarEventCell.self), for: indexPath) as! CalendarEventCell
-        let store = EKEventStore()
-        let event = EKEvent(eventStore: store)
-        event.title = "hahahah"
-        event.location = "zhonghuarenminggongheguo hahah"
-        
-        event.startDate = Date(timeIntervalSinceNow: -3600)
-        event.endDate = Date(timeIntervalSinceNow: 3600)
-        cell.update(model: event)
-        return cell
-    }
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+extension DemoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = CalendarEventHeadView()
         headerView.update(isToday: false, content: viewModel.sectionTitle(section: section))
         return headerView
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "-- \(section)"
     }
 }

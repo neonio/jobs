@@ -29,20 +29,27 @@ class CalendarEventCell: UITableViewCell {
         } else {
             locationLabel.isHidden = true
         }
+        let calendarColor: CGColor? = model.calendar.cgColor
+        let eventColor = UIColor(cgColor: calendarColor ?? UIColor.blue.cgColor)
+        eventTypeImageView.tintColor = eventColor
         
-//        let eventColor = UIColor(cgColor: model.calendar.cgColor)
-//        eventTypeImageView.tintColor = eventColor
+        _ = participantStackView.arrangedSubviews.map { (view) -> Void in
+            participantStackView.removeArrangedSubview(view)
+        }
         
         for attendee in model.attendees ?? [] {
-            let label = UILabel()
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 13)
+            let imageView = UIImageView()
+            var aStr:String = ""
             if let attendeeName = attendee.name, !attendeeName.isEmpty {
-                label.text = String(attendeeName.first!)
+                aStr = attendeeName.short()
             } else if let urlStr = attendee.url.absoluteString.first {
-                label.text = String(urlStr)
+                aStr = String(urlStr)
             }
-            participantStackView.addArrangedSubview(label)
+            
+            let image = UIImage.image(string: aStr, size: CGSize(width: 32, height: 32), color: aStr.color(), font: UIFont.systemFont(ofSize: 14, weight: .medium), fontColor: UIColor.white)
+            imageView.image = image
+
+            participantStackView.addArrangedSubview(imageView)
         }
         participantStackView.isHidden = participantStackView.arrangedSubviews.count == 0
     }
@@ -96,7 +103,7 @@ class CalendarEventCell: UITableViewCell {
         
         participantStackView.translatesAutoresizingMaskIntoConstraints = false
         participantStackView.leadingAnchor.constraint(equalTo: mainTitleLabel.leadingAnchor).isActive = true
-        participantStackView.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        participantStackView.widthAnchor.constraint(equalToConstant: 180).isActive = true
         participantStackView.topAnchor.constraint(equalTo: mainTitleLabel.bottomAnchor, constant: 8).isActive = true
         
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -137,8 +144,9 @@ class CalendarEventCell: UITableViewCell {
     lazy var participantStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.spacing = 2
         stack.alignment = .fill
-        stack.distribution = .fillEqually
+        stack.distribution = .equalSpacing
         return stack
     }()
     
@@ -153,7 +161,7 @@ class CalendarEventCell: UITableViewCell {
     lazy var eventTypeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .center
-        let placeholderImage = UIImage.image(withColor: UIColor.black, size: CGSize(width: 8, height: 8), cornerRadius: 4, strokeWidth: nil, strokeColor: nil)
+        let placeholderImage = UIImage.image(withColor: UIColor.black, size: CGSize(width: 8, height: 8), cornerRadius: 4, strokeWidth: nil, strokeColor: nil)?.withRenderingMode(.alwaysTemplate)
         imageView.image = placeholderImage
         return imageView
     }()

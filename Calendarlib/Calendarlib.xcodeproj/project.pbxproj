@@ -25,6 +25,7 @@
 		29DAB5B921630BC600B29045 /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5B821630BC600B29045 /* CalendarHelper.swift */; };
 		29DAB5BE216337F600B29045 /* CalendarEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5BD216337F600B29045 /* CalendarEventCell.swift */; };
 		29DAB5C121633B1D00B29045 /* CalendarEventHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5C021633B1D00B29045 /* CalendarEventHeadView.swift */; };
+		29FFCC5C21644B820007E314 /* EventWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FFCC5B21644B820007E314 /* EventWorker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		29DAB5B821630BC600B29045 /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		29DAB5BD216337F600B29045 /* CalendarEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventCell.swift; sourceTree = "<group>"; };
 		29DAB5C021633B1D00B29045 /* CalendarEventHeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventHeadView.swift; sourceTree = "<group>"; };
+		29FFCC5B21644B820007E314 /* EventWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventWorker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				2947F278216357D900C3892A /* DemoCalendarViewModel.swift */,
+				29FFCC5B21644B820007E314 /* EventWorker.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -90,7 +93,6 @@
 			children = (
 				29DAB5BA216335CD00B29045 /* SupportedFiles */,
 				29DAB5B1216309FC00B29045 /* Sources */,
-				29DAB5A1216309DB00B29045 /* DemoViewController.swift */,
 				2947F2762163536700C3892A /* DetailViewController.swift */,
 				29DAB59F216309DB00B29045 /* AppDelegate.swift */,
 				29DAB5A3216309DB00B29045 /* Main.storyboard */,
@@ -104,6 +106,7 @@
 		29DAB5B1216309FC00B29045 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				29DAB5A1216309DB00B29045 /* DemoViewController.swift */,
 				2947F2822163DB8B00C3892A /* DataSource */,
 				29DAB5C321633D4200B29045 /* CalendarView */,
 				29DAB5C221633D3700B29045 /* Utils */,
@@ -224,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29DAB5B521630B0100B29045 /* CalendarBodyView.swift in Sources */,
+				29FFCC5C21644B820007E314 /* EventWorker.swift in Sources */,
 				2947F2812163A93E00C3892A /* Date+Construct.swift in Sources */,
 				2947F279216357D900C3892A /* DemoCalendarViewModel.swift in Sources */,
 				2947F27F2163A77100C3892A /* Date+Readable.swift in Sources */,
