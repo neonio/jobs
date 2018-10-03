@@ -61,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2947F2822163DB8B00C3892A /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2947F278216357D900C3892A /* DemoCalendarViewModel.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		29DAB593216309DB00B29045 = {
 			isa = PBXGroup;
 			children = (
@@ -89,7 +97,6 @@
 				29DAB5A6216309DD00B29045 /* Assets.xcassets */,
 				29DAB5A8216309DD00B29045 /* LaunchScreen.storyboard */,
 				29DAB5AB216309DD00B29045 /* Info.plist */,
-				2947F278216357D900C3892A /* DemoCalendarViewModel.swift */,
 			);
 			path = Calendarlib;
 			sourceTree = "<group>";
@@ -97,6 +104,7 @@
 		29DAB5B1216309FC00B29045 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				2947F2822163DB8B00C3892A /* DataSource */,
 				29DAB5C321633D4200B29045 /* CalendarView */,
 				29DAB5C221633D3700B29045 /* Utils */,
 				29DAB5BF21633AF200B29045 /* EventTable */,

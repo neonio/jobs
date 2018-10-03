@@ -61,6 +61,8 @@ class DemoViewController: UIViewController {
         tableView.dataSource = self
         view.addSubview(tableView)
         tableView.register(CalendarEventCell.self, forCellReuseIdentifier: NSStringFromClass(CalendarEventCell.self))
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -104,7 +106,7 @@ class DemoViewController: UIViewController {
 }
 
 // MARK: - Protocol
-
+import EventKit
 extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 42
@@ -125,10 +127,18 @@ extension DemoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(CalendarEventCell.self), for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(CalendarEventCell.self), for: indexPath) as! CalendarEventCell
+        let store = EKEventStore()
+        let event = EKEvent(eventStore: store)
+        event.title = "hahahah"
+        event.location = "zhonghuarenminggongheguo hahah"
+        
+        event.startDate = Date(timeIntervalSinceNow: -3600)
+        event.endDate = Date(timeIntervalSinceNow: 3600)
+        cell.update(model: event)
         return cell
     }
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2

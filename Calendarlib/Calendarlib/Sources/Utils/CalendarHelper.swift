@@ -79,16 +79,14 @@ extension UIBarButtonItem {
 }
 
 extension UILabel {
-    func fontAwesome(size: CGFloat = 16, contentStr: String) -> UILabel {
-        font = UIFont(name: "FontAwesome", size: size)
-        text = contentStr
+    @discardableResult
+    func fontAwesome(size: CGFloat = 16) -> UILabel {
+        font = IconFont.font(size: size)
         return self
     }
 }
 
 extension UIImage {
-    
-    
     static func image(withColor: UIColor, size: CGSize = CGSize(width: 4, height: 4), cornerRadius: CGFloat = 0, strokeWidth: CGFloat? = nil, strokeColor: UIColor? = nil) -> UIImage? {
         let opaque = cornerRadius == 0.0
         UIGraphicsBeginImageContextWithOptions(size, opaque, 0)
@@ -127,5 +125,10 @@ struct CalendarConstant {
         static let fontColor = UIColor.white
         static let fillColor = UIColor(hex: 0x1072C9)
         static let fillBackgroundColor = UIColor(hex: 0xF4F9FC)
+    }
+
+    struct tableview {
+        static let darkColor = UIColor(white: 0, alpha: 1)
+        static let grayColor = UIColor(hex: 0x8E8D92)
     }
 }
