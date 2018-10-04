@@ -6,9 +6,27 @@
 //  Copyright © 2018 amoyio. All rights reserved.
 //
 
-import UIKit
 import EventKit
-class DemoCalendarViewModel:NSObject {
+import UIKit
+enum CalendarMode {
+    case month
+    case week
+}
+
+
+
+enum CalendarScrollDirection {
+    case vertical
+    case horizontal
+}
+
+enum CalendarMonthPosition {
+    case current
+    case previousMonth
+    case nextMonth
+}
+
+class DemoCalendarViewModel: NSObject {
     var headDateFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MM")
     var headShortDateFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MMMM yyyy")
     var tableDayFormat: DateFormatter = DateFormatFactory.shared.dateFormatter(format: "MM/dd")
@@ -46,7 +64,7 @@ extension DemoCalendarViewModel: UITableViewDataSource {
         event.location = "zhonghuarenminggongheguo hahah"
         var attendees = [EKParticipant]()
         for i in 0 ..< 5 {
-            if let attendee = createParticipant(email: "test\(i)@email.com") , indexPath.row % 3 == 0 {
+            if let attendee = createParticipant(email: "test\(i)@email.com"), indexPath.row % 3 == 0 {
                 attendees.append(attendee)
             }
         }

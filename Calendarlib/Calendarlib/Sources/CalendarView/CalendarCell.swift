@@ -23,7 +23,9 @@ struct CalendarCellPresenter {
 }
 
 class CalendarCell: UICollectionViewCell {
-    func updateUI(presentModel: CalendarCellPresenter) {}
+    func updateUI(position:CalendarMonthPosition, date: Date) {
+        dayLabel.text = "\(date.day)"
+    }
     
     // MARK: - Life Cycle
     

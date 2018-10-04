@@ -36,27 +36,15 @@ class DemoViewController: UIViewController {
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         
-        let calendarHeadView = CalendarHeadView()
-        view.addSubview(calendarHeadView)
-        calendarHeadView.translatesAutoresizingMaskIntoConstraints = false
-        calendarHeadView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        calendarHeadView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        calendarHeadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        calendarHeadView.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        
-        let calView = CalendarBodyView(frame: .zero, collectionViewLayout: layout)
-        calView.showsVerticalScrollIndicator = false
-        calView.showsHorizontalScrollIndicator = false
-        calView.register(CalendarCell.self, forCellWithReuseIdentifier: NSStringFromClass(CalendarCell.self))
-        view.addSubview(calView)
-        calView.translatesAutoresizingMaskIntoConstraints = false
-        calView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        calView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        calView.topAnchor.constraint(equalTo: calendarHeadView.bottomAnchor).isActive = true
-        calView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        calView.delegate = self
-        calView.dataSource = self
-        calView.backgroundColor = UIColor.lightGray
+        let calendarView = CalendarView()
+        calendarView.layout = layout
+        calendarView.register(CalendarCell.self, forCellWithReuseIdentifier: NSStringFromClass(CalendarCell.self))
+        view.addSubview(calendarView)
+        calendarView.translatesAutoresizingMaskIntoConstraints = false
+        calendarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        calendarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        calendarView.heightAnchor.constraint(equalToConstant: 320).isActive = true
         
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.delegate = self
@@ -68,7 +56,7 @@ class DemoViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: calView.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
@@ -110,19 +98,7 @@ class DemoViewController: UIViewController {
 // MARK: - Protocol
 
 import EventKit
-extension DemoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 42
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(CalendarCell.self), for: indexPath) as! CalendarCell
-        cell.dayLabel.text = "\(indexPath.row)"
-        cell.monthLabel.text = "12月"
-        
-        return cell
-    }
-}
+
 
 extension DemoViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
