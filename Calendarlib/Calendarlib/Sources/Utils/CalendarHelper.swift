@@ -139,7 +139,7 @@ struct CalendarConstant {
     struct `default` {
         static let font = UIFont.systemFont(ofSize: 16, weight: .medium)
         static let black = UIColor(white: 0, alpha: 0.8)
-        static let fontColor = UIColor(white: 0, alpha: 1)
+        static let fontColor = UIColor(white: 0, alpha: 0.6)
         static let disableFillColor = UIColor(hex: 0xF8F8F8)
         static let normalFillColor = UIColor.white
         static let monthLabelFont = UIFont.systemFont(ofSize: 11)
@@ -148,7 +148,7 @@ struct CalendarConstant {
     struct selectedStyle {
         static let fontColor = UIColor.white
         static let fillColor = UIColor(hex: 0x1072C9)
-        static let fillBackgroundColor = UIColor(hex: 0xF4F9FC)
+        static let fillBackgroundColor = UIColor(hex: 0x0078D6)
     }
 
     struct tableview {

@@ -31,7 +31,7 @@ class DemoViewController: UIViewController {
         setupNav()
         
         let layout = UICollectionViewFlowLayout()
-        let cellWidth = view.bounds.width / 7
+        let cellWidth = floor(view.bounds.width / 7)
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
@@ -44,7 +44,7 @@ class DemoViewController: UIViewController {
         calendarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         calendarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        calendarView.heightAnchor.constraint(equalToConstant: 320).isActive = true
+        calendarView.heightAnchor.constraint(equalToConstant: cellWidth * 5 + 28).isActive = true
         
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.delegate = self
@@ -58,6 +58,8 @@ class DemoViewController: UIViewController {
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        calendarView.scrollToToday(animated: false)
     }
     
     // MARK: - UI setup

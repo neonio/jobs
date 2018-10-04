@@ -25,10 +25,17 @@ class CalendarBodyView: UICollectionView {
 }
 
 class CalendarView: UIView {
-    lazy var calculator: CalendarCalculator = {
-        let calculator = CalendarCalculator()
-        return calculator
-    }()
+    func scrollTo(date: Date, animated: Bool) {
+        let validDate = calculator.fitDateByScope(originDate: date)
+        if let indexPath = calculator.getIndexPath(date: validDate, mode: calculator.mode, inPosition: .current) {
+//            bodyView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
+            bodyView.setContentOffset(CGPoint(x: 0, y: -1000), animated: true)
+        }
+    }
+    
+    func scrollToToday(animated: Bool) {
+        scrollTo(date: Date(), animated: animated)
+    }
     
     func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String) {
         bodyView.register(cellClass, forCellWithReuseIdentifier: identifier)
@@ -81,10 +88,16 @@ class CalendarView: UIView {
     
     lazy var bodyView: CalendarBodyView = {
         let collectionView = CalendarBodyView(frame: .zero, collectionViewLayout: layout)
-        collectionView.isPagingEnabled = true
         return collectionView
     }()
     
+    lazy var calculator: CalendarCalculator = {
+        let calculator = CalendarCalculator()
+        return calculator
+    }()
+    
+    var selectedIndexPath: IndexPath?
+    var previousIndexPath: IndexPath?
     var headView: CalendarHeadView = CalendarHeadView()
 }
 
@@ -93,7 +106,7 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
         switch calculator.mode {
         case .month:
             if calculator.isScrollModeEnabled {
-                return 7 * calculator.numberOfSection()
+                return 7 * calculator.numberOfRows(section: section)
             } else {
                 return 42
             }
@@ -103,10 +116,26 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let date = calculator.getDate(indexPath: indexPath, mode: calculator.mode)
-        let monthPosition = calculator.getMonthPosition(indexPath: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(CalendarCell.self), for: indexPath) as! CalendarCell
-        cell.updateUI(position: monthPosition, date: date)
+        let date = calculator.getDate(indexPath: indexPath, mode: calculator.mode)
+        let dayNum = date.day
+        let monthPosition = calculator.getMonthPosition(indexPath: indexPath)
+        let isMonthStartDate = (dayNum == 1)
+        let eventCount = (dayNum + date.month) % 4
+        let isToday = Calendar.current.isDateInToday(date)
+        let viewModel = CalendarCellViewModel()
+        
+        viewModel.isToday = isToday
+        viewModel.eventCount = eventCount
+        viewModel.isMonthStartDate = isMonthStartDate
+        viewModel.date = date
+        viewModel.position = monthPosition
+        if let selectedIndexPath = selectedIndexPath {
+            viewModel.isSelected = (indexPath == selectedIndexPath)
+        } else {
+            viewModel.isSelected = false
+        }
+        cell.update(viewmodel: viewModel)
         return cell
     }
     
@@ -115,5 +144,30 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
         return calculator.numberOfSection()
     }
     
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if let selectedIndexPath = selectedIndexPath, selectedIndexPath != indexPath {
+            let oldIndexPath = selectedIndexPath
+            self.selectedIndexPath = indexPath
+            UIView.animate(withDuration: 0) {
+                collectionView.performBatchUpdates({
+                    collectionView.reloadItems(at: [oldIndexPath, indexPath])
+                }, completion: nil)
+            }
+        } else {
+            self.selectedIndexPath = indexPath
+            UIView.animate(withDuration: 0) {
+                collectionView.performBatchUpdates({
+                    collectionView.reloadItems(at: [indexPath])
+                }, completion: nil)
+            }
+        }
+        
+        return true
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("\(indexPath)")
+        print("\(calculator.getDate(indexPath: indexPath, mode: calculator.mode))")
+        print("------")
+    }
 }

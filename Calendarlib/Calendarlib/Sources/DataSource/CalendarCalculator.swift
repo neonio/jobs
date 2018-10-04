@@ -55,11 +55,14 @@ class CalendarCalculator {
         if let rowCount = memCache.rows[date] {
             return rowCount
         } else {
-            let firstDateOfMonth: Date = date.monthStartDate()!
+            guard let firstDateOfMonth: Date = date.monthStartDate() else {
+                return 0
+            }
             var row: Int = 0
             let monthDayCount = numberOfDaysInMonth(date: firstDateOfMonth)
-            row += (monthDayCount / 7)
-            if numberOfLastMonthDaysInThisSection(monthStartDate: date) % 7 > 0 {
+            let lastMonthDaysCount = numberOfLastMonthDaysInThisSection(monthStartDate: date)
+            row += ((monthDayCount + lastMonthDaysCount) / 7)
+            if lastMonthDaysCount % 7 > 0 {
                 row += 1
             }
             memCache.rows[date] = row
@@ -97,7 +100,7 @@ class CalendarCalculator {
             let calculateVal = minDate + section.months
             let preCount = numberOfLastMonthDaysInThisSection(monthStartDate: calculateVal)
             memCache.months[section] = calculateVal
-            let resultLeadingDate: Date = calculateVal + preCount.days
+            let resultLeadingDate: Date = calculateVal - preCount.days
             memCache.monthLeadings[section] = resultLeadingDate
             return resultLeadingDate
         }
@@ -204,11 +207,9 @@ class CalendarCalculator {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - protocol
-    
     // MARK: - property
     
-    var isScrollModeEnabled: Bool = false
+    var isScrollModeEnabled: Bool = true
     var mode: CalendarMode = .month
     var monthCount: Int = 0
     var weekCount: Int = 0

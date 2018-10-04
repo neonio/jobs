@@ -14,19 +14,19 @@ struct WeekSpan {
 
 extension Date {
     func monthStartDate() -> Date? {
-        var comp = calendar.dateComponents([.year, .month, .day], from: self)
+        var comp = calendar.dateComponents([.year, .month, .day, .hour], from: self)
         comp.day = 1
-        return comp.date
+        return calendar.date(from: comp)
     }
     
     func monthLastDate() -> Date? {
-        var comp = calendar.dateComponents([.year, .month, .day], from: self)
+        var comp = calendar.dateComponents([.year, .month, .day, .hour], from: self)
         guard let monthNum = comp.month else {
             return nil
         }
         comp.month = 1 + monthNum
         comp.day = 0
-        return comp.date
+        return calendar.date(from: comp)
     }
     
     func weekStartDate() -> Date? {
@@ -138,7 +138,7 @@ extension Date {
         return left
     }
     
-    static func - (left: Date, right: DateComponents) -> Date? {
+    static func - (left: Date, right: DateComponents) -> Date {
         if let result = Calendar.current.date(byAdding: -right, to: left) {
             return result
         }

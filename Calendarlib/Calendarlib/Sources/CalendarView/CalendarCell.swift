@@ -15,16 +15,57 @@ import UIKit
 // month Label 16
 // -------
 
-struct CalendarCellPresenter {
-    var isMonthFirstDay: Bool = false
-    var isSelect: Bool = false
-    var inCurrentMonthScope: Bool = true
-    var numberOfEvent: Int = 0
+class CalendarCellViewModel {
+    var isToday: Bool = false
+    var eventCount: Int = 0
+    var isMonthStartDate: Bool = false
+    var date: Date = Date()
+    var position: CalendarMonthPosition = .current
+    var isSelected: Bool = false
 }
 
 class CalendarCell: UICollectionViewCell {
-    func updateUI(position:CalendarMonthPosition, date: Date) {
-        dayLabel.text = "\(date.day)"
+    func configSelectedUI() {
+        monthLabel.textColor = UIColor.clear
+        dayLabel.textColor = CalendarConstant.selectedStyle.fontColor
+        bgLayer.fillColor = CalendarConstant.selectedStyle.fillBackgroundColor.cgColor
+        bgLayer.isHidden = false
+    }
+    
+    func configNormalUI() {
+        monthLabel.textColor = CalendarConstant.default.fontColor
+        dayLabel.textColor = CalendarConstant.default.fontColor
+        bgLayer.isHidden = true
+    }
+    
+    func update(viewmodel: CalendarCellViewModel) {
+        self.viewModel = viewmodel
+        let dayNum = viewmodel.date.day
+        let monthNum = viewmodel.date.month
+        dayLabel.text = "\(dayNum)"
+        monthLabel.text = viewmodel.isMonthStartDate ? Calendar.current.shortMonthSymbols[monthNum - 1] : ""
+        eventIndicatorView.eventCount = (viewmodel.isSelected ? 0 : viewmodel.eventCount)
+        if viewmodel.isToday {
+            backgroundColor = UIColor(hex: 0xD2E5F5)
+        } else {
+            backgroundColor = monthNum % 2 == 0 ? UIColor(hex: 0xF8F8F8) : UIColor.white
+        }
+        updateUI(viewmodel.position)
+        if viewmodel.isSelected {
+            configSelectedUI()
+        } else {
+            configNormalUI()
+        }
+        setNeedsLayout()
+    }
+    
+    func updateUI(_ position: CalendarMonthPosition) {
+        switch position {
+        case .nextMonth, .previousMonth:
+            break
+        case .current:
+            break
+        }
     }
     
     // MARK: - Life Cycle
@@ -54,13 +95,20 @@ class CalendarCell: UICollectionViewCell {
         contentView.clipsToBounds = false
     }
     
+    var viewModel: CalendarCellViewModel = CalendarCellViewModel()
+    
     private func layoutMethod() {
-        var topOffset: CGFloat = 0
-        monthLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.3))
+        var topOffset: CGFloat = ceil(contentView.bounds.height * 0.08)
+        if viewModel.eventCount == 0 && viewModel.isMonthStartDate {
+            topOffset += ceil(contentView.bounds.height * 0.08)
+        }
+        monthLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.22))
         topOffset += monthLabel.bounds.height
-        dayLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.6))
+        dayLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.5))
         topOffset += dayLabel.bounds.height
         eventIndicatorView.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.2))
+        let circlePath = UIBezierPath(arcCenter: dayLabel.center, radius: 20, startAngle: 0, endAngle: .pi * 2, clockwise: true)
+        bgLayer.path = circlePath.cgPath
     }
     
     override func layoutSubviews() {
@@ -94,17 +142,60 @@ class CalendarCell: UICollectionViewCell {
     
     lazy var bgLayer: CAShapeLayer = {
         let bgLayer = CAShapeLayer()
-        bgLayer.borderWidth = 1
-        bgLayer.borderColor = UIColor.clear.cgColor
         bgLayer.fillColor = UIColor.clear.cgColor
-        bgLayer.isHidden = true
         layer.insertSublayer(bgLayer, below: dayLabel.layer)
         return bgLayer
     }()
     
-    lazy var eventIndicatorView: UIView = {
-        let eventView = UIView()
-        eventView.backgroundColor = .clear
+    lazy var eventIndicatorView: EventIndicatorView = {
+        let eventView = EventIndicatorView()
         return eventView
     }()
+}
+
+class EventIndicatorView: UIView {
+    var eventCount: Int = 0 {
+        didSet {
+            updateUI(eventCount: eventCount)
+        }
+    }
+    
+    var radius: CGFloat = 2
+    lazy var displayLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.path = circlePath(radius: radius).cgPath
+        layer.fillColor = UIColor.clear.cgColor
+        return layer
+    }()
+    
+    private func updateUI(eventCount: Int) {
+        displayLayer.fillColor = UIColor(white: 0.2, alpha: CGFloat(eventCount) / 4).cgColor
+    }
+    
+    private func circlePath(radius: CGFloat) -> UIBezierPath {
+        let originPoint = CGPoint(x: bounds.width / 2 - radius, y: 0)
+        let rect = CGRect(origin: originPoint, size: CGSize(width: radius * 2, height: radius * 2))
+        let path = UIBezierPath(ovalIn: rect)
+        return path
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        displayLayer.path = circlePath(radius: radius).cgPath
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialized()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialized()
+    }
+    
+    private func initialized() {
+        displayLayer.frame = bounds
+        layer.addSublayer(displayLayer)
+    }
 }

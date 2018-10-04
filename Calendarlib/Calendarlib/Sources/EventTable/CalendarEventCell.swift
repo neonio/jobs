@@ -30,7 +30,7 @@ class CalendarEventCell: UITableViewCell {
             locationLabel.isHidden = true
         }
         let calendarColor: CGColor? = model.calendar.cgColor
-        let eventColor = UIColor(cgColor: calendarColor ?? UIColor.blue.cgColor)
+        let eventColor = UIColor(cgColor: calendarColor ?? UIColor(hex:0xF2C500).cgColor)
         eventTypeImageView.tintColor = eventColor
         
         _ = participantStackView.arrangedSubviews.map { (view) -> Void in
