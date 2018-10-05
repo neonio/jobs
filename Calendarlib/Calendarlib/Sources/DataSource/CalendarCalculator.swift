@@ -28,6 +28,10 @@ class CalendarCalculator {
         clearMem()
     }
     
+    func monthDateOffsetByWeekday() -> Int {
+        return (minDate.weekday - calendar.firstWeekday + 7) % 7
+    }
+    
     func weekStartDate(section: Int) -> Date {
         if let date = memCache.weeks[section] {
             return date
@@ -49,6 +53,25 @@ class CalendarCalculator {
     
     func numberOfDaysInMonth(date: Date) -> Int {
         return calendar.range(of: .day, in: .month, for: date)?.count ?? 0
+    }
+    
+    func numberOfDaysInSection(section: Int) -> Int {
+        let monthFirstDay = monthStartDate(section: section)
+        let monthDays = numberOfDaysInMonth(date: monthFirstDay)
+        let placeholderDays = numberOfLastMonthDaysInThisSection(monthStartDate: monthFirstDay)
+        return monthDays + placeholderDays
+    }
+    
+    func getDate(indexPath: IndexPath, mode: CalendarMode) -> Date {
+        switch mode {
+        case .month:
+            let startOfMonth = monthStartDate(section: indexPath.section)
+            let placeholderDays = numberOfLastMonthDaysInThisSection(monthStartDate: startOfMonth)
+            return startOfMonth + (indexPath.row - placeholderDays).day
+        case .week:
+            let startOfWeek = weekStartDate(section: indexPath.section)
+            return startOfWeek + indexPath.row.day
+        }
     }
     
     func numberOfRowsInMonth(date: Date) -> Int {
@@ -128,11 +151,14 @@ class CalendarCalculator {
     func getMonthPosition(indexPath: IndexPath) -> CalendarMonthPosition {
         if mode == .week { return .current }
         let currentDate = getDate(indexPath: indexPath, mode: mode)
+        if currentDate > maxDate || currentDate < minDate {
+            return .placeholder
+        }
         let startDate = monthStartDate(section: indexPath.section)
         let result = calendar.compare(currentDate, to: startDate, toGranularity: .month)
         switch result {
         case .orderedAscending:
-            return .previousMonth
+            return .placeholder
         case .orderedSame:
             return .current
         case .orderedDescending:
@@ -140,16 +166,6 @@ class CalendarCalculator {
         }
     }
     
-    func getDate(indexPath: IndexPath, mode: CalendarMode) -> Date {
-        switch mode {
-        case .month:
-            let startOfMonth = monthStartDate(section: indexPath.section)
-            return startOfMonth + indexPath.row.day
-        case .week:
-            let startOfWeek = weekStartDate(section: indexPath.section)
-            return startOfWeek + indexPath.row.day
-        }
-    }
     
     func getIndexPath(date: Date, mode: CalendarMode, inPosition: CalendarMonthPosition) -> IndexPath? {
         var resultIndexPath: IndexPath?
@@ -165,17 +181,19 @@ class CalendarCalculator {
                 resultSection += 1
             case .nextMonth:
                 resultSection -= 1
-            case .current:
+            case .current,.placeholder:
                 break
             }
             // 2. get start Date in this section
             let leadingDate = monthStartDate(section: section)
+            let preCount = numberOfLastMonthDaysInThisSection(monthStartDate: leadingDate)
             // 3. calculate offset
             guard let row = calendar.dateComponents([.day], from: leadingDate, to: date).day else {
                 return nil
             }
+            
             // 4. return result
-            resultIndexPath = IndexPath(row: row, section: resultSection)
+            resultIndexPath = IndexPath(row: row + preCount, section: resultSection)
         case .week:
             guard let section = calendar.dateComponents([.weekOfYear], from: minDate.weekStartDate()!, to: date.weekStartDate()!).weekOfYear else {
                 return nil

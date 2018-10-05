@@ -28,8 +28,7 @@ class CalendarView: UIView {
     func scrollTo(date: Date, animated: Bool) {
         let validDate = calculator.fitDateByScope(originDate: date)
         if let indexPath = calculator.getIndexPath(date: validDate, mode: calculator.mode, inPosition: .current) {
-//            bodyView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-            bodyView.setContentOffset(CGPoint(x: 0, y: -1000), animated: true)
+            bodyView.scrollToItem(at: indexPath, at: .centeredVertically, animated: animated)
         }
     }
     
@@ -106,8 +105,7 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
         switch calculator.mode {
         case .month:
             if calculator.isScrollModeEnabled {
-                let monthStartDate = calculator.monthStartDate(section: section)
-                return 7 * calculator.numberOfDaysInMonth(date: monthStartDate)
+                return calculator.numberOfDaysInSection(section: section)
             } else {
                 return 42
             }
@@ -167,8 +165,5 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\(indexPath)")
-        print("\(calculator.getDate(indexPath: indexPath, mode: calculator.mode))")
-        print("------")
     }
 }

@@ -59,7 +59,9 @@ class DemoViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: calendarView.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
-        calendarView.scrollToToday(animated: false)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
+            calendarView.scrollToToday(animated: false)
+        }
     }
     
     // MARK: - UI setup

@@ -61,10 +61,10 @@ class CalendarCell: UICollectionViewCell {
     
     func updateUI(_ position: CalendarMonthPosition) {
         switch position {
-        case .nextMonth, .previousMonth:
-            break
-        case .current:
-            break
+        case .nextMonth, .previousMonth,.current:
+            self.isHidden = false
+        case .placeholder:
+            self.isHidden = true
         }
     }
     
@@ -106,12 +106,12 @@ class CalendarCell: UICollectionViewCell {
         topOffset += monthLabel.bounds.height
         var dayLabelY: CGFloat = ceil(contentView.bounds.height * 0.25)
         if viewModel.eventCount == 0 && viewModel.isMonthStartDate {
-            dayLabelY = topOffset
+            dayLabelY = viewModel.isSelected ? dayLabelY : topOffset
         }
         dayLabel.frame = CGRect(x: 0, y: dayLabelY, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.5))
         topOffset = dayLabel.frame.maxY
         eventIndicatorView.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.1))
-        let circlePath = UIBezierPath(arcCenter: dayLabel.center, radius: 20, startAngle: 0, endAngle: .pi * 2, clockwise: true)
+        let circlePath = UIBezierPath(arcCenter: contentView.center, radius: 20, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         bgLayer.path = circlePath.cgPath
         underlineLayer.frame = CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1)
     }
