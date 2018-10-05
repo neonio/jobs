@@ -139,6 +139,7 @@ struct CalendarConstant {
     struct `default` {
         static let font = UIFont.systemFont(ofSize: 16, weight: .medium)
         static let black = UIColor(white: 0, alpha: 0.8)
+        static let gray = UIColor(white: 0.9, alpha: 1)
         static let fontColor = UIColor(white: 0, alpha: 0.6)
         static let disableFillColor = UIColor(hex: 0xF8F8F8)
         static let normalFillColor = UIColor.white

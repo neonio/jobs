@@ -106,7 +106,8 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
         switch calculator.mode {
         case .month:
             if calculator.isScrollModeEnabled {
-                return 7 * calculator.numberOfRows(section: section)
+                let monthStartDate = calculator.monthStartDate(section: section)
+                return 7 * calculator.numberOfDaysInMonth(date: monthStartDate)
             } else {
                 return 42
             }

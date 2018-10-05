@@ -143,7 +143,7 @@ class CalendarCalculator {
     func getDate(indexPath: IndexPath, mode: CalendarMode) -> Date {
         switch mode {
         case .month:
-            let startOfMonth = monthPageLeadingDate(section: indexPath.section)
+            let startOfMonth = monthStartDate(section: indexPath.section)
             return startOfMonth + indexPath.row.day
         case .week:
             let startOfWeek = weekStartDate(section: indexPath.section)
@@ -169,7 +169,7 @@ class CalendarCalculator {
                 break
             }
             // 2. get start Date in this section
-            let leadingDate = monthPageLeadingDate(section: section)
+            let leadingDate = monthStartDate(section: section)
             // 3. calculate offset
             guard let row = calendar.dateComponents([.day], from: leadingDate, to: date).day else {
                 return nil

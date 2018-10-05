@@ -31,7 +31,7 @@ class DemoViewController: UIViewController {
         setupNav()
         
         let layout = UICollectionViewFlowLayout()
-        let cellWidth = floor(view.bounds.width / 7)
+        let cellWidth = view.bounds.width / 7.0
         layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0

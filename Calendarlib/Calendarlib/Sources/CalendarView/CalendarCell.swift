@@ -104,11 +104,16 @@ class CalendarCell: UICollectionViewCell {
         }
         monthLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.22))
         topOffset += monthLabel.bounds.height
-        dayLabel.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.5))
-        topOffset += dayLabel.bounds.height
-        eventIndicatorView.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.2))
+        var dayLabelY: CGFloat = ceil(contentView.bounds.height * 0.25)
+        if viewModel.eventCount == 0 && viewModel.isMonthStartDate {
+            dayLabelY = topOffset
+        }
+        dayLabel.frame = CGRect(x: 0, y: dayLabelY, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.5))
+        topOffset = dayLabel.frame.maxY
+        eventIndicatorView.frame = CGRect(x: 0, y: topOffset, width: contentView.bounds.width, height: ceil(contentView.bounds.height * 0.1))
         let circlePath = UIBezierPath(arcCenter: dayLabel.center, radius: 20, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         bgLayer.path = circlePath.cgPath
+        underlineLayer.frame = CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1)
     }
     
     override func layoutSubviews() {
@@ -145,6 +150,13 @@ class CalendarCell: UICollectionViewCell {
         bgLayer.fillColor = UIColor.clear.cgColor
         layer.insertSublayer(bgLayer, below: dayLabel.layer)
         return bgLayer
+    }()
+    
+    lazy var underlineLayer: CAShapeLayer = {
+        let underlineLayer = CAShapeLayer()
+        underlineLayer.backgroundColor = CalendarConstant.default.gray.cgColor
+        layer.insertSublayer(underlineLayer, below: bgLayer)
+        return underlineLayer
     }()
     
     lazy var eventIndicatorView: EventIndicatorView = {
