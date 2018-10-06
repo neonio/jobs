@@ -37,6 +37,7 @@ class DemoViewController: UIViewController {
         layout.minimumInteritemSpacing = 0
         
         let calendarView = CalendarView()
+        calendarView.delegate = self
         calendarView.layout = layout
         calendarView.register(CalendarCell.self, forCellWithReuseIdentifier: NSStringFromClass(CalendarCell.self))
         view.addSubview(calendarView)
@@ -100,6 +101,13 @@ class DemoViewController: UIViewController {
 }
 
 // MARK: - Protocol
+
+extension DemoViewController : CalendarViewDelegate {
+    func didSelect(in collectionView: CalendarView, at indexPath: IndexPath, with date: Date) {
+        viewModel.pickedDate = date
+        updateNavTitle()
+    }
+}
 
 import EventKit
 

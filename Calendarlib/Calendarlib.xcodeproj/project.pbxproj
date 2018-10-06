@@ -25,6 +25,7 @@
 		29DAB5B921630BC600B29045 /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5B821630BC600B29045 /* CalendarHelper.swift */; };
 		29DAB5BE216337F600B29045 /* CalendarEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5BD216337F600B29045 /* CalendarEventCell.swift */; };
 		29DAB5C121633B1D00B29045 /* CalendarEventHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DAB5C021633B1D00B29045 /* CalendarEventHeadView.swift */; };
+		29EB8DE5216721A000FF865E /* CalendarLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB8DE4216721A000FF865E /* CalendarLayout.swift */; };
 		29FFCC5C21644B820007E314 /* EventWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FFCC5B21644B820007E314 /* EventWorker.swift */; };
 		29FFCC5E2164D0CA0007E314 /* CalendarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FFCC5D2164D0CA0007E314 /* CalendarCalculator.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		29DAB5B821630BC600B29045 /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		29DAB5BD216337F600B29045 /* CalendarEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventCell.swift; sourceTree = "<group>"; };
 		29DAB5C021633B1D00B29045 /* CalendarEventHeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventHeadView.swift; sourceTree = "<group>"; };
+		29EB8DE4216721A000FF865E /* CalendarLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLayout.swift; sourceTree = "<group>"; };
 		29FFCC5B21644B820007E314 /* EventWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventWorker.swift; sourceTree = "<group>"; };
 		29FFCC5D2164D0CA0007E314 /* CalendarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCalculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +155,7 @@
 				2947F27221633ECE00C3892A /* CalendarCell.swift */,
 				29DAB5B421630B0100B29045 /* CalendarBodyView.swift */,
 				29DAB5B621630B5A00B29045 /* CalendarHeadView.swift */,
+				29EB8DE4216721A000FF865E /* CalendarLayout.swift */,
 			);
 			path = CalendarView;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				2947F275216350DE00C3892A /* DateFormatFactory.swift in Sources */,
 				29DAB5B921630BC600B29045 /* CalendarHelper.swift in Sources */,
 				29FFCC5E2164D0CA0007E314 /* CalendarCalculator.swift in Sources */,
+				29EB8DE5216721A000FF865E /* CalendarLayout.swift in Sources */,
 				29DAB5BE216337F600B29045 /* CalendarEventCell.swift in Sources */,
 				29DAB5A2216309DB00B29045 /* DemoViewController.swift in Sources */,
 				29DAB5B721630B5A00B29045 /* CalendarHeadView.swift in Sources */,

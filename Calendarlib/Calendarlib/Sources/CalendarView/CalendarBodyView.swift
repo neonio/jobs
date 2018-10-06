@@ -7,6 +7,10 @@
 //
 
 import UIKit
+protocol CalendarViewDelegate: class {
+    func didSelect(in collectionView: CalendarView, at indexPath: IndexPath, with date: Date)
+}
+
 class CalendarBodyView: UICollectionView {
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -98,9 +102,10 @@ class CalendarView: UIView {
     var selectedIndexPath: IndexPath?
     var previousIndexPath: IndexPath?
     var headView: CalendarHeadView = CalendarHeadView()
+    weak var delegate: CalendarViewDelegate?
 }
 
-extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch calculator.mode {
         case .month:
@@ -164,6 +169,55 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource {
         return true
     }
     
+    // MARK: - ScrollViewDelegate
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if let collectionView = scrollView as? UICollectionView {
+            if let visibleCell = collectionView.visibleCells.first {
+                print(collectionView.visibleCells.map{$0.frame})
+//                if let indexPath = collectionView.indexPath(for: visibleCell) {
+//                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+//                }
+            }
+        }
+        scrollView.gestureRecognizers?.forEach({ gesture in
+            if !gesture.isEqual(scrollView.panGestureRecognizer) {
+                gesture.isEnabled = false
+            }
+        })
+    }
+    
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        if let collectionView = scrollView as? UICollectionView {
+//            if let visibleCell = collectionView.visibleCells.first {
+//                if let indexPath = collectionView.indexPath(for: visibleCell) {
+//                    collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+//                }
+//            }
+//        }
+//        scrollView.gestureRecognizers?.forEach({ gesture in
+//            if !gesture.isEqual(scrollView.panGestureRecognizer) {
+//                gesture.isEnabled = true
+//            }
+//        })
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let date: Date = calculator.getDate(indexPath: indexPath, mode: calculator.mode)
+        delegate?.didSelect(in: self, at: indexPath, with: date)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
+            let monthStartDate = calculator.monthStartDate(section: section)
+            let placeholderCount = calculator.numberOfLastMonthDaysInThisSection(monthStartDate: monthStartDate)
+            if placeholderCount > 0 && section != 0 {
+                return UIEdgeInsets(top: -floor(layout.itemSize.height), left: 0, bottom: 0, right: 0)
+            } else {
+                return .zero
+            }
+        } else {
+            return .zero
+        }
     }
 }
