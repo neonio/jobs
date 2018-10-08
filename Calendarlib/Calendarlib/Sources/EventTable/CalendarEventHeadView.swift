@@ -8,17 +8,19 @@
 
 import UIKit
 class CalendarEventHeadView: UIView {
-    func update(isToday:Bool, content:String) {
-        titleLabel.text = content
-        if isToday {
+    func update(date:Date, content: String) {
+        var displayContent:String = content
+        if date.isInToday {
+            displayContent = "TODAY · " + displayContent
             titleLabel.textColor = CalendarConstant.selectedStyle.fillColor
-            backgroundColor = CalendarConstant.selectedStyle.fillBackgroundColor
+            backgroundColor = CalendarConstant.selectedStyle.sectionBackgroundColor
         }else{
             titleLabel.textColor = CalendarConstant.default.fontColor
             backgroundColor = CalendarConstant.default.disableFillColor
         }
+        titleLabel.text = displayContent
     }
-    
+   
     override init(frame: CGRect) {
         super.init(frame: frame)
         initialized()

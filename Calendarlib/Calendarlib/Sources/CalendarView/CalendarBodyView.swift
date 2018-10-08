@@ -9,6 +9,7 @@
 import UIKit
 protocol CalendarViewDelegate: class {
     func didSelect(in collectionView: CalendarView, at indexPath: IndexPath, with date: Date)
+    func willBeginDragging(in collectionView: CalendarView)
 }
 
 class CalendarBodyView: UICollectionView {
@@ -25,6 +26,7 @@ class CalendarBodyView: UICollectionView {
     private func initialized() {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
+        scrollsToTop = false
     }
 }
 
@@ -38,6 +40,12 @@ class CalendarView: UIView {
     
     func scrollToToday(animated: Bool) {
         scrollTo(date: Date(), animated: animated)
+    }
+    
+    func scrollToSelectedIndexPath(animated: Bool) {
+        if let selectedIndexPath = selectedIndexPath {
+            bodyView.scrollToItem(at: selectedIndexPath, at: .top, animated: animated)
+        }
     }
     
     func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String) {
@@ -61,6 +69,11 @@ class CalendarView: UIView {
         bodyView.dataSource = self
         
         setupUI()
+    }
+    
+    convenience init(calculator: CalendarCalculator) {
+        self.init()
+        self.calculator = calculator
     }
     
     private func setupUI() {
@@ -102,6 +115,7 @@ class CalendarView: UIView {
     var selectedIndexPath: IndexPath?
     var previousIndexPath: IndexPath?
     var headView: CalendarHeadView = CalendarHeadView()
+    var isCollapse: Bool = false
     weak var delegate: CalendarViewDelegate?
 }
 
@@ -170,16 +184,8 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     // MARK: - ScrollViewDelegate
-    
+
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if let collectionView = scrollView as? UICollectionView {
-            if let visibleCell = collectionView.visibleCells.first {
-                print(collectionView.visibleCells.map{$0.frame})
-//                if let indexPath = collectionView.indexPath(for: visibleCell) {
-//                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-//                }
-            }
-        }
         scrollView.gestureRecognizers?.forEach({ gesture in
             if !gesture.isEqual(scrollView.panGestureRecognizer) {
                 gesture.isEnabled = false
@@ -187,20 +193,10 @@ extension CalendarView: UICollectionViewDelegate, UICollectionViewDataSource, UI
         })
     }
     
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        if let collectionView = scrollView as? UICollectionView {
-//            if let visibleCell = collectionView.visibleCells.first {
-//                if let indexPath = collectionView.indexPath(for: visibleCell) {
-//                    collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-//                }
-//            }
-//        }
-//        scrollView.gestureRecognizers?.forEach({ gesture in
-//            if !gesture.isEqual(scrollView.panGestureRecognizer) {
-//                gesture.isEnabled = true
-//            }
-//        })
-//    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.willBeginDragging(in: self)
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let date: Date = calculator.getDate(indexPath: indexPath, mode: calculator.mode)

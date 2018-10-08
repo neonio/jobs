@@ -46,7 +46,7 @@ class CalendarEventCell: UITableViewCell {
                 aStr = String(urlStr)
             }
             
-            let image = UIImage.image(string: aStr, size: CGSize(width: 32, height: 32), color: aStr.color(), font: UIFont.systemFont(ofSize: 14, weight: .medium), fontColor: UIColor.white)
+            let image = UIImage.image(string: aStr, size: CGSize(width: 28, height: 28), color: aStr.color(), font: UIFont.systemFont(ofSize: 14, weight: .medium), fontColor: UIColor.white)
             imageView.image = image
 
             participantStackView.addArrangedSubview(imageView)
@@ -98,7 +98,7 @@ class CalendarEventCell: UITableViewCell {
         
         mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         mainTitleLabel.leadingAnchor.constraint(equalTo: eventTypeImageView.trailingAnchor, constant: 12).isActive = true
-        mainTitleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        mainTitleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -24).isActive = true
         mainTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         
         participantStackView.translatesAutoresizingMaskIntoConstraints = false

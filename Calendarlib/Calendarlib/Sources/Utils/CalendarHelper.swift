@@ -150,6 +150,7 @@ struct CalendarConstant {
         static let fontColor = UIColor.white
         static let fillColor = UIColor(hex: 0x1072C9)
         static let fillBackgroundColor = UIColor(hex: 0x0078D6)
+        static let sectionBackgroundColor = UIColor(hex: 0xF4F9FC)
     }
 
     struct tableview {
