@@ -172,7 +172,7 @@ class CalendarCalculator {
         switch mode {
         case .month:
             // 1. get month index from minDate to currrent time
-            guard let section = calendar.dateComponents([.month], from: minDate, to: date).month else {
+            guard let section = calendar.dateComponents([.month], from: minDate - 1.second, to: date).month else {
                 return nil
             }
             var resultSection = section

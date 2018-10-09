@@ -106,6 +106,7 @@ class DemoViewController: UIViewController {
     }
     
     // MARK: - Property
+    
     var calendarViewHeightCons: NSLayoutConstraint?
     var layout: UICollectionViewFlowLayout?
     var tableView: UITableView?
@@ -115,6 +116,7 @@ class DemoViewController: UIViewController {
         let viewmodel = DemoCalendarViewModel(calculator: calculator)
         return viewmodel
     }()
+
 }
 
 // MARK: - Protocol
@@ -133,7 +135,7 @@ extension DemoViewController: CalendarViewDelegate {
             calendarViewHeightCons?.constant = cellHeight * 5 + 28
             UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
-            }) { (isFinished) in
+            }) { _ in
                 self.calendarView?.isCollapse = false
             }
         }
@@ -145,12 +147,12 @@ extension DemoViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = CalendarEventHeadView()
         let date = viewModel.dateIn(section: section)
         let sectionTitle = viewModel.sectionTitle(section: section)
-        headerView.update(date: date, content:sectionTitle)
+        headerView.update(date: date, content: sectionTitle)
         return headerView
     }
     
@@ -162,11 +164,9 @@ extension DemoViewController: UITableViewDelegate {
             calendarView?.scrollToSelectedIndexPath(animated: true)
             UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
-            }) { (isFinished) in
+            }) { _ in
                 self.calendarView?.isCollapse = true
             }
         }
     }
 }
-
-
